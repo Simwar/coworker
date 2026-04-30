@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://astropods.ai/schema/package.json
+spec: astro/v1
+name: coworker
+
+agent:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  interfaces:
+    messaging: true
+
+models:
+  anthropic:
+    provider: anthropic
+
+integrations:
+  anthropic:
+    provider: anthropic
+  google:
+    provider: google
+
+knowledge:
+  db:
+    provider: postgres
+    inputs:
+      - name: POSTGRES_PASSWORD
+        datatype: string
+        default: postgres
+
+dev:
+  interfaces:
+    messaging:
+      adapters: [web]
