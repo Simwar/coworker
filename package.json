@@ -25,6 +25,7 @@
     "node": ">=22.13.0"
   },
   "dependencies": {
+    "@astropods/adapter-mastra": "^0.2.0",
     "@mastra/ai-sdk": "^1.0.5",
     "@mastra/core": "^1.6.0",
     "@mastra/e2b": "^0.0.3",

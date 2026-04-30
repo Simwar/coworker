@@ -12,20 +12,15 @@ agent:
 models:
   anthropic:
     provider: anthropic
-
-integrations:
-  anthropic:
-    provider: anthropic
+  openai:
+    provider: openai
   google:
     provider: google
 
 knowledge:
   db:
     provider: postgres
-    inputs:
-      - name: POSTGRES_PASSWORD
-        datatype: string
-        default: postgres
+    persistent: true
 
 dev:
   interfaces:
