@@ -75,10 +75,23 @@ async function seedWorkingMemory() {
   }
 }
 
+async function initStorageWithRetry(maxAttempts = 15, delayMs = 2000): Promise<void> {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      await storage.init();
+      return;
+    } catch (err) {
+      if (attempt === maxAttempts) throw err;
+      console.log(`[init] database not ready, retrying in ${delayMs}ms (attempt ${attempt}/${maxAttempts})...`);
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+}
+
 // Initialize custom tables, scheduled tasks, WhatsApp, and working memory
 taskManager.setMastra(mastra);
 whatsAppManager.setMastra(mastra);
-storage.init()
+initStorageWithRetry()
   .then(() => seedBuiltinSkills())
   .then(() => harnessPool.startSweeper())
   .then(() => taskManager.init())
