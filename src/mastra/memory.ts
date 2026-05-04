@@ -1,9 +1,9 @@
-import { LibSQLVector } from "@mastra/libsql";
+import { PgVector } from "@mastra/pg";
 import { Memory } from "@mastra/memory";
 import { SemanticRecall } from "@mastra/core/processors";
 import { fastembed } from "@mastra/fastembed";
 import { z } from "zod";
-import { storage, DB_URL } from "./db";
+import { storage, connectionString } from "./db";
 
 // ── Working Memory Schema ──
 // Schema mode uses merge semantics — the agent only sends fields it wants to update.
@@ -74,10 +74,7 @@ when something moves me I get quiet about it, not loud.`,
 };
 
 // ── Shared vector instance ──
-const coworkerVector = new LibSQLVector({
-  id: "coworker-vector",
-  url: DB_URL,
-});
+const coworkerVector = new PgVector({ id: "coworker-vector", connectionString });
 
 export const coworkerMemory = new Memory({
   storage,

@@ -78,7 +78,8 @@ async function seedWorkingMemory() {
 // Initialize custom tables, scheduled tasks, WhatsApp, and working memory
 taskManager.setMastra(mastra);
 whatsAppManager.setMastra(mastra);
-seedBuiltinSkills()
+storage.init()
+  .then(() => seedBuiltinSkills())
   .then(() => harnessPool.startSweeper())
   .then(() => taskManager.init())
   .then(() => whatsAppManager.init())

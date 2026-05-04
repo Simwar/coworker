@@ -3,9 +3,9 @@ import type { RequestContext } from '@mastra/core/request-context';
 import type { MastraCompositeStore } from '@mastra/core/storage';
 import { Memory } from '@mastra/memory';
 import { fastembed } from '@mastra/fastembed';
-import { LibSQLVector } from '@mastra/libsql';
+import { PgVector } from '@mastra/pg';
 import { workingMemorySchema } from '../memory';
-import { DB_URL } from '../db';
+import { connectionString } from '../db';
 import type { stateSchema } from './schema';
 
 const DEFAULT_OBS_THRESHOLD = 30_000;
@@ -29,7 +29,7 @@ function getHarnessState(requestContext: RequestContext) {
  * Working memory (persona + org) is always enabled.
  */
 export function getDynamicMemory(storage: MastraCompositeStore) {
-  const vector = new LibSQLVector({ id: 'harness-vector', url: DB_URL });
+  const vector = new PgVector({ id: 'harness-vector', connectionString });
 
   return ({ requestContext }: { requestContext: RequestContext }) => {
     const state = getHarnessState(requestContext);

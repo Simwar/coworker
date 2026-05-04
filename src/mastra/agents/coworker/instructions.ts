@@ -12,9 +12,18 @@ import type { stateSchema } from "../../harness/schema";
 export async function getInstructions(params?: { requestContext?: RequestContext }): Promise<string> {
   const harnessCtx = params?.requestContext?.get('harness') as HarnessRequestContext<typeof stateSchema> | undefined;
 
-  // Safety net — all callers should go through Harness
+  // Safety net — all callers should go through Harness, but init validation calls with no context
   if (!harnessCtx) {
-    return agentConfig.getInstructions();
+    const prompt = buildFullPrompt({
+      date: new Date().toISOString().split('T')[0]!,
+      mode: 'build',
+      modeId: 'build',
+      platform: process.platform,
+      activePlan: null,
+      state: undefined,
+    });
+    const customInstructions = agentConfig.getInstructions();
+    return customInstructions ? prompt + '\n\n# Agent Instructions\n\n' + customInstructions : prompt;
   }
 
   const state = harnessCtx.getState?.();
