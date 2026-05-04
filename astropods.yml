@@ -12,8 +12,6 @@ agent:
 models:
   anthropic:
     provider: anthropic
-  openai:
-    provider: openai
 
 inputs:
   MODEL:
@@ -24,16 +22,19 @@ inputs:
   GOG_GOOGLE_CLIENT_ID:
     name: GOG_GOOGLE_CLIENT_ID
     datatype: string
+    optional: true
     description: Google OAuth client ID for Workspace integration
   GOG_GOOGLE_CLIENT_SECRET:
     name: GOG_GOOGLE_CLIENT_SECRET
     datatype: string
     secret: true
+    optional: true
     description: Google OAuth client secret for Workspace integration
   GOG_KEYRING_PASSWORD:
     name: GOG_KEYRING_PASSWORD
     datatype: string
     secret: true
+    optional: true
     description: Password used to encrypt stored Google OAuth tokens
 
 knowledge:
