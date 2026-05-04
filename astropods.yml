@@ -53,8 +53,13 @@ knowledge:
         default: postgres
       - name: POSTGRES_PASSWORD
         datatype: string
-        secret: true
         default: postgres
+      - name: POSTGRES_HOST_AUTH_METHOD
+        datatype: string
+        default: trust
+      - name: PGDATA
+        datatype: string
+        default: /var/lib/postgresql/data/pgdata
 
 dev:
   interfaces:
