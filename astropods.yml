@@ -16,13 +16,13 @@ models:
     provider: openai
 
 inputs:
-  MODEL:
+  - name: MODEL
     datatype: string
     default: anthropic/claude-sonnet-4-5
     description: Model to use (e.g. anthropic/claude-sonnet-4-5, openai/gpt-4o)
 
 knowledge:
-  data:
+  database:
     provider: postgres
     persistent: true
 
