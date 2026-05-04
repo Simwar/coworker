@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://astropods.ai/schema/package.json
+spec: astro/v1
+name: coworker
+
+agent:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  interfaces:
+    messaging: true
+
+models:
+  anthropic:
+    provider: anthropic
+  openai:
+    provider: openai
+
+inputs:
+  MODEL:
+    name: MODEL
+    datatype: string
+    default: anthropic/claude-sonnet-4-5
+    description: Model to use (e.g. anthropic/claude-sonnet-4-5, openai/gpt-4o)
+  GOG_GOOGLE_CLIENT_ID:
+    name: GOG_GOOGLE_CLIENT_ID
+    datatype: string
+    description: Google OAuth client ID for Workspace integration
+  GOG_GOOGLE_CLIENT_SECRET:
+    name: GOG_GOOGLE_CLIENT_SECRET
+    datatype: string
+    secret: true
+    description: Google OAuth client secret for Workspace integration
+  GOG_KEYRING_PASSWORD:
+    name: GOG_KEYRING_PASSWORD
+    datatype: string
+    secret: true
+    description: Password used to encrypt stored Google OAuth tokens
+
+knowledge:
+  pg:
+    container:
+      image: pgvector/pgvector:pg17
+      port: 5432
+      volume: /var/lib/postgresql/data
+    persistent: true
+    inputs:
+      - name: POSTGRES_DB
+        datatype: string
+        default: coworker
+      - name: POSTGRES_USER
+        datatype: string
+        default: postgres
+      - name: POSTGRES_PASSWORD
+        datatype: string
+        secret: true
+        default: postgres
+
+dev:
+  interfaces:
+    messaging:
+      adapters: [web]

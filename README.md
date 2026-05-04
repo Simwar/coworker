@@ -93,6 +93,38 @@ docker compose up
 
 Builds are automated via GitHub Actions and pushed to `ghcr.io`.
 
+## Google Workspace Integration
+
+Coworker uses [gogcli](https://github.com/steipete/gogcli) to access Gmail, Calendar, and other Google services on behalf of the user. Setup requires a Google Cloud OAuth app.
+
+### 1. Create a Google Cloud project
+
+Go to [console.cloud.google.com/projectcreate](https://console.cloud.google.com/projectcreate) and create a new project.
+
+### 2. Enable APIs
+
+Enable the APIs you want the agent to use (Gmail, Calendar, Drive, Docs, Sheets, etc.) in the [API Library](https://console.cloud.google.com/apis/library).
+
+### 3. Configure the OAuth consent screen
+
+Go to [console.cloud.google.com/auth/branding](https://console.cloud.google.com/auth/branding) and complete the consent screen setup.
+
+### 4. Create OAuth credentials
+
+Go to [console.cloud.google.com/auth/clients](https://console.cloud.google.com/auth/clients), click **Create Client**, select **Desktop app**, and download the JSON file.
+
+### 5. Configure the agent
+
+Set the following environment variables (or inputs when deploying on Astro):
+
+```
+GOG_GOOGLE_CLIENT_ID=your-client-id
+GOG_GOOGLE_CLIENT_SECRET=your-client-secret
+GOG_KEYRING_PASSWORD=a-strong-password   # encrypts stored tokens at rest
+```
+
+Once set, users connect their Google account through the **Integrations** panel in the agent UI — no further server configuration needed.
+
 ## Auto-Updates
 
 The desktop app supports automatic updates via GitHub Releases. When a new release is published, users are notified in **Settings > Advanced** where they can download and install the update.
