@@ -14,8 +14,6 @@ models:
     provider: anthropic
   openai:
     provider: openai
-  google:
-    provider: google
 
 knowledge:
   db:
