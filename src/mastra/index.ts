@@ -16,7 +16,23 @@ import { coworkerMcpServer } from './mcp/server';
 import { harnessPool } from './harness/pool';
 import { createAuthMiddleware } from './middleware/auth';
 import { createRoutes } from './routes';
+
 const whatsAppManager = new WhatsAppManager();
+
+// Initialize storage schema before Mastra starts — Mastra queries storage on construction
+// so tables must exist first. Retry with backoff to handle slow postgres startup.
+await (async function initStorageWithRetry(maxAttempts = 15, delayMs = 2000) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      await storage.init();
+      return;
+    } catch (err) {
+      if (attempt === maxAttempts) throw err;
+      console.log(`[init] database not ready, retrying in ${delayMs}ms (attempt ${attempt}/${maxAttempts})...`);
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+})();
 
 export const mastra = new Mastra({
   agents: { coworkerAgent },
@@ -75,24 +91,10 @@ async function seedWorkingMemory() {
   }
 }
 
-async function initStorageWithRetry(maxAttempts = 15, delayMs = 2000): Promise<void> {
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    try {
-      await storage.init();
-      return;
-    } catch (err) {
-      if (attempt === maxAttempts) throw err;
-      console.log(`[init] database not ready, retrying in ${delayMs}ms (attempt ${attempt}/${maxAttempts})...`);
-      await new Promise(resolve => setTimeout(resolve, delayMs));
-    }
-  }
-}
-
-// Initialize custom tables, scheduled tasks, WhatsApp, and working memory
+// Initialize scheduled tasks, WhatsApp, and working memory after Mastra is ready
 taskManager.setMastra(mastra);
 whatsAppManager.setMastra(mastra);
-initStorageWithRetry()
-  .then(() => seedBuiltinSkills())
+seedBuiltinSkills()
   .then(() => harnessPool.startSweeper())
   .then(() => taskManager.init())
   .then(() => whatsAppManager.init())
