@@ -1,9 +1,9 @@
 ---
-description: "AI team member that handles tasks, answers questions, manages workflows, and builds internal tools via chat."
+description: "Fork of Array-Ventures/coworker — AI team member that handles tasks, answers questions, manages workflows, and builds internal tools via chat."
 tags: [productivity, workspace, coding, google-workspace, mcp, scheduling, whatsapp]
 authors:
-  - name: Array Ventures
-    account: array-ventures
+  - name: Simon Guerrier
+    account: simwar
 capabilities:
   - "Answers questions and drafts content from conversation context"
   - "Builds and maintains internal dashboards and tools with git version control"
@@ -15,7 +15,7 @@ capabilities:
   - "Switches between AI providers and models at runtime"
   - "Installs community skills from ClawHub and skills.sh"
   - "Communicates with other agents via the A2A protocol"
-repository: github:Array-Ventures/coworker
+repository: github:Simwar/coworker
 integrations:
   - Anthropic
   - OpenAI
@@ -27,7 +27,7 @@ integrations:
 
 ## Overview
 
-Coworker is an open-source AI agent that acts as a team member rather than a tool. It remembers past conversations, tracks tasks across sessions, manages your Google Workspace, and can build internal dashboards — all through natural language chat.
+Coworker is an open-source AI agent that acts as a team member rather than a tool. It remembers past conversations, tracks tasks across sessions, manages your Google Workspace, and can build internal dashboards — all through natural language chat. This is a fork of the original [coworker](https://github.com/Array-Ventures/coworker) by Array Ventures.
 
 Built on [Mastra](https://mastra.ai) and designed for team deployment on the Astro platform.
 
